@@ -75,7 +75,7 @@
         margin-right: 8px;
         font-size: 1.3rem;
       }
-      /* Cards para Categorias */
+      /* Cards para Categorias (dinâmicos) */
       .cards {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -194,96 +194,11 @@
         </a>
       </div>
 
-      <!-- Cards: Apresentações e Templates -->
-      <div class="cards">
-        <!-- Card 1: Apresentações Agence -->
-        <div class="card">
-          <div class="card-header">
-            <i class="fas fa-desktop"></i>
-            <span>Apresentações Agence</span>
-          </div>
-          <div class="card-body">
-            <div class="button-grid">
-              <a
-                class="btn"
-                href="https://bit.ly/ApresentacaoCompleta2025"
-                target="_blank"
-              >
-                <i class="fas fa-play-circle"></i>
-                Completa 2025
-              </a>
-              <a
-                class="btn"
-                href="https://1drv.ms/p/s!AkXiokxCMftNnPs5tLH1arwQt6qG6A?e=YpvvFR"
-                target="_blank"
-              >
-                <i class="fas fa-play-circle"></i>
-                Inteligência Artificial
-              </a>
-              <a
-                class="btn"
-                href="https://1drv.ms/p/s!AkXiokxCMftNnKpNaO8VOIvXHI5MXA?e=GwhZ9Z"
-                target="_blank"
-              >
-                <i class="fas fa-user-tie"></i>
-                R&amp;S 2025
-              </a>
-              <a class="btn" href="https://bit.ly/RPA-2025" target="_blank">
-                <i class="fas fa-cogs"></i>
-                RPA 2025
-              </a>
-              <a class="btn" href="https://bit.ly/4gDysLm" target="_blank">
-                <i class="fas fa-language"></i>
-                Espanhol 2021
-              </a>
-              <a
-                class="btn"
-                href="https://1drv.ms/p/s!AkXiokxCMftNnYQinKJuT6K49jnHWg?e=UfPqkH"
-                target="_blank"
-              >
-                <i class="fas fa-language"></i>
-                Background Check
-              </a>
-            </div>
-          </div>
-        </div>
-        <!-- Card 2: Templates de Proposta -->
-        <div class="card">
-          <div class="card-header">
-            <i class="fas fa-file-powerpoint"></i>
-            <span>Templates Apresentação de Proposta</span>
-          </div>
-          <div class="card-body">
-            <div class="button-grid">
-              <a
-                class="btn"
-                href="https://bit.ly/horas-abertas-fabrica"
-                target="_blank"
-              >
-                <i class="fas fa-briefcase"></i>
-                Horas Abertas
-              </a>
-              <a
-                class="btn"
-                href="https://bit.ly/Consultoria-Requisitos-e-Prototipagem"
-                target="_blank"
-              >
-                <i class="fas fa-chart-line"></i>
-                Consultoria &amp; Prototipagem
-              </a>
-              <a
-                class="btn"
-                href="https://1drv.ms/p/s!AkXiokxCMftNnYUBgNcl4RfSchhyFA?e=vDnuKh"
-                target="_blank"
-              >
-                <i class="fas fa-chart-line"></i>
-                Background Check
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Seção dos cards (links variáveis) -->
+      <!-- Em vez de conteúdo fixo, os links serão gerados dinamicamente a partir da planilha (CSV) -->
+      <div class="cards" id="cards-container"></div>
     </div>
+
     <footer
       style="
         text-align: center;
@@ -294,5 +209,98 @@
     >
       &copy; 2025 Agence. Todos os direitos reservados.
     </footer>
+
+    <script>
+      // Carrega o CSV via fetch
+      async function carregarCSV(caminhoArquivo) {
+        try {
+          const resposta = await fetch(caminhoArquivo);
+          if (!resposta.ok) {
+            throw new Error(
+              "Erro ao carregar " + caminhoArquivo + ": " + resposta.status
+            );
+          }
+          const texto = await resposta.text();
+          return texto;
+        } catch (erro) {
+          console.error(erro);
+        }
+      }
+
+      // Faz o parse simples do CSV (assume separador vírgula e cabeçalho na primeira linha)
+      function parseCSV(texto, delimitador = ",") {
+        const linhas = texto
+          .split("\n")
+          .map((linha) => linha.trim())
+          .filter((linha) => linha !== "");
+        const dados = linhas.map((linha) =>
+          linha.split(delimitador).map((coluna) => coluna.trim())
+        );
+        return dados;
+      }
+
+      // Agrupa as linhas por categoria (ignora o cabeçalho)
+      function agruparPorCategoria(dados) {
+        const grupos = {};
+        for (let i = 1; i < dados.length; i++) {
+          const [categoria, nome, link] = dados[i];
+          if (!grupos[categoria]) {
+            grupos[categoria] = [];
+          }
+          grupos[categoria].push({ nome, link });
+        }
+        return grupos;
+      }
+
+      // Renderiza os cards no contêiner (mantendo a estrutura dos cards já existentes)
+      function renderizaCards(grupos, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+        for (const categoria in grupos) {
+          // Cria o card
+          const card = document.createElement("div");
+          card.classList.add("card");
+
+          // Cabeçalho do card com ícone e título
+          const header = document.createElement("div");
+          header.classList.add("card-header");
+          const icone = document.createElement("i");
+          icone.className = "fas fa-link";
+          header.appendChild(icone);
+          const titulo = document.createElement("span");
+          titulo.textContent = categoria;
+          header.appendChild(titulo);
+          card.appendChild(header);
+
+          // Corpo do card com os botões de links
+          const corpo = document.createElement("div");
+          corpo.classList.add("card-body");
+          const grid = document.createElement("div");
+          grid.classList.add("button-grid");
+          grupos[categoria].forEach((item) => {
+            const btn = document.createElement("a");
+            btn.classList.add("btn");
+            btn.href = item.link;
+            btn.target = "_blank";
+            btn.innerHTML = `<i class="fas fa-external-link-alt"></i> ${item.nome}`;
+            grid.appendChild(btn);
+          });
+          corpo.appendChild(grid);
+          card.appendChild(corpo);
+
+          container.appendChild(card);
+        }
+      }
+
+      // Inicialização: lê o CSV, faz o parse, agrupa e renderiza os cards dinâmicos na sessão existente
+      document.addEventListener("DOMContentLoaded", function () {
+        const caminhoCSV = "planilha.csv"; // certifique-se de que este arquivo esteja acessível
+        carregarCSV(caminhoCSV).then((csvText) => {
+          const dados = parseCSV(csvText);
+          const grupos = agruparPorCategoria(dados);
+          renderizaCards(grupos, "cards-container");
+        });
+      });
+    </script>
   </body>
 </html>
