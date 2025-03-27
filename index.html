@@ -31,7 +31,7 @@
         background: linear-gradient(135deg, #eff3f6, #d9e2ec);
         color: #333;
       }
-      /* Container ampliado para telas maiores */
+      /* Container */
       .container {
         width: 95%;
         max-width: 1400px;
@@ -121,13 +121,51 @@
       .btn:hover {
         transform: scale(1.025);
       }
-      /* Responsividade */
+      /* Responsividade para telas até 600px */
       @media (max-width: 600px) {
         .cards {
           grid-template-columns: 1fr;
         }
         .big-cards {
           flex-direction: column;
+        }
+        .container {
+          padding: 20px;
+        }
+      }
+      /* Ajustes para mobile s (telas ultra pequenas até 400px) */
+      @media (max-width: 400px) {
+        body {
+          padding: 10px;
+        }
+        .container {
+          padding: 15px;
+        }
+        h1 {
+          font-size: 1.8rem;
+          margin-bottom: 20px;
+        }
+        .big-card {
+          padding: 15px;
+          font-size: 0.9rem;
+          min-width: unset;
+          width: 90%;
+          margin: 0 auto;
+        }
+        .card-header {
+          font-size: 1.1rem;
+          padding: 8px 12px;
+        }
+        .card-body {
+          padding: 12px;
+        }
+        .btn {
+          padding: 8px 10px;
+          font-size: 0.8rem;
+        }
+        .button-grid {
+          grid-template-columns: 1fr;
+          gap: 10px;
         }
       }
     </style>
@@ -171,36 +209,40 @@
                 href="https://bit.ly/ApresentacaoCompleta2025"
                 target="_blank"
               >
-                <i class="fas fa-play-circle"></i>Completa 2025
+                <i class="fas fa-play-circle"></i>
+                Completa 2025
               </a>
-
               <a
                 class="btn"
                 href="https://1drv.ms/p/s!AkXiokxCMftNnPs5tLH1arwQt6qG6A?e=YpvvFR"
                 target="_blank"
               >
-                <i class="fas fa-play-circle"></i>Inteligência Artificial
+                <i class="fas fa-play-circle"></i>
+                Inteligência Artificial
               </a>
-
               <a
                 class="btn"
                 href="https://1drv.ms/p/s!AkXiokxCMftNnKpNaO8VOIvXHI5MXA?e=GwhZ9Z"
                 target="_blank"
               >
-                <i class="fas fa-user-tie"></i>R&amp;S 2025
+                <i class="fas fa-user-tie"></i>
+                R&amp;S 2025
               </a>
               <a class="btn" href="https://bit.ly/RPA-2025" target="_blank">
-                <i class="fas fa-cogs"></i>RPA 2025
+                <i class="fas fa-cogs"></i>
+                RPA 2025
               </a>
               <a class="btn" href="https://bit.ly/4gDysLm" target="_blank">
-                <i class="fas fa-language"></i>Espanhol 2021
+                <i class="fas fa-language"></i>
+                Espanhol 2021
               </a>
               <a
                 class="btn"
                 href="https://1drv.ms/p/s!AkXiokxCMftNnYQinKJuT6K49jnHWg?e=UfPqkH"
                 target="_blank"
               >
-                <i class="fas fa-language"></i>Background Check
+                <i class="fas fa-language"></i>
+                Background Check
               </a>
             </div>
           </div>
@@ -218,28 +260,30 @@
                 href="https://bit.ly/horas-abertas-fabrica"
                 target="_blank"
               >
-                <i class="fas fa-briefcase"></i>Horas Abertas
+                <i class="fas fa-briefcase"></i>
+                Horas Abertas
               </a>
               <a
                 class="btn"
                 href="https://bit.ly/Consultoria-Requisitos-e-Prototipagem"
                 target="_blank"
               >
-                <i class="fas fa-chart-line"></i>Consultoria &amp; Prototipagem
+                <i class="fas fa-chart-line"></i>
+                Consultoria &amp; Prototipagem
               </a>
               <a
                 class="btn"
                 href="https://1drv.ms/p/s!AkXiokxCMftNnYUBgNcl4RfSchhyFA?e=vDnuKh"
                 target="_blank"
               >
-                <i class="fas fa-chart-line"></i>Background Check
+                <i class="fas fa-chart-line"></i>
+                Background Check
               </a>
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <footer
       style="
         text-align: center;
